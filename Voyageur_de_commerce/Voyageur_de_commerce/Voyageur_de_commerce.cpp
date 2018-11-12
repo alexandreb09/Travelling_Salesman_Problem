@@ -58,8 +58,23 @@ void generer_chemin_aleatoire(t_probleme & probleme, t_solution & solution) {
 
 void calculer_cout(t_solution & solution, t_probleme & probleme){
 	solution.cout = 0;
-	for (int i = 0; i < probleme.nb_sommets ; i++){
+	for (int i = 0; i < probleme.nb_sommets; i++){
 		solution.cout += probleme.distance[solution.chemin[i]][solution.chemin[i+1]];
 	}
 }
 
+
+void cheapest_construction(t_probleme &probleme, t_solution &solution) {
+	int ensemble_sommets[nb_sommets_max];
+	for (int i = 0; i < nb_sommets_max; i++) {
+		ensemble_sommets[i] = i;
+	}
+	
+	for (int i = 1; i < probleme.nb_sommets; i++) {
+
+
+
+
+	}
+
+}

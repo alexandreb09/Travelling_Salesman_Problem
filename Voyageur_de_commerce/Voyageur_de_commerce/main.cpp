@@ -13,15 +13,25 @@ int main(int, char **) {
 	lecture_fichier("../Sources/a280.txt", probleme);
 
 	pre_calcul_probleme(probleme);
+	
+	// cheapest_construction(probleme, solution);
 
-	solution.chemin[0] = 0;
-	solution.chemin[1] = 1;
-	solution.chemin[2] = 2;
-	solution.chemin[3] = 0;
+	
+	// generer_chemin_aleatoire(probleme, solution);
+
+	
+	for (int i = 0; i < probleme.nb_sommets; i++) {
+		solution.chemin[i] = i;
+	}
+	solution.chemin[probleme.nb_sommets] = 0;
+	
 
 	calculer_cout(solution,probleme);
-	generer_chemin_aleatoire(probleme, solution);
 
+
+	cout << "Cout solution : " << solution.cout << endl;
+
+	
 	string quitter;
 	cout << "Appuyer pour quitter : ";
 	cin >> quitter;
