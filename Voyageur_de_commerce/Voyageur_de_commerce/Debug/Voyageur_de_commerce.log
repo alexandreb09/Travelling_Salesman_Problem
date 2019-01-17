@@ -1,8 +1,2 @@
 ﻿  Voyageur_de_commerce.cpp
-d:\1.cours\isima\zz2\outils_aide_décision\tp3\voyageur_de_commerce\voyageur_de_commerce\voyageur_de_commerce.cpp(14): warning C4101: 'valeur1' : variable locale non référencée
-d:\1.cours\isima\zz2\outils_aide_décision\tp3\voyageur_de_commerce\voyageur_de_commerce\voyageur_de_commerce.cpp(14): warning C4101: 'valeur2' : variable locale non référencée
-d:\1.cours\isima\zz2\outils_aide_décision\tp3\voyageur_de_commerce\voyageur_de_commerce\voyageur_de_commerce.cpp(34): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-d:\1.cours\isima\zz2\outils_aide_décision\tp3\voyageur_de_commerce\voyageur_de_commerce\voyageur_de_commerce.cpp(35): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-  main.cpp
-  Génération de code en cours...
   Voyageur_de_commerce.vcxproj -> D:\1.Cours\ISIMA\ZZ2\Outils_Aide_Décision\TP3\Voyageur_de_commerce\Debug\Voyageur_de_commerce.exe
