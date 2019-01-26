@@ -110,6 +110,7 @@ void resolutionNearestNeighbour(t_probleme & probleme, Solution & solution) {
 
 	genererCheminNearestVoisin(probleme, solution, sommet_depart);
 	// solution.afficherSolution();
+	std::cout << "i : " << 1 << " Cout i : " << solution_courante.getCout() << " Best cout : " << solution.getCout() << std::endl;
 
 	for (int i = 2; i <= probleme.nb_sommets; i++) {
 		solution_courante.resetSommetsVisites();
@@ -119,6 +120,7 @@ void resolutionNearestNeighbour(t_probleme & probleme, Solution & solution) {
 			solution = solution_courante;
 			sommet_depart = i;
 		}
+		std::cout << "i : " << i << " Cout i : " << solution_courante.getCout() << ":  Best cout : " << solution.getCout() << std::endl;
 	}
 }
 
@@ -161,6 +163,7 @@ void resolutionCheapestInsertion(t_probleme & probleme, Solution & solution){
 	Solution solution_courante(probleme.nb_sommets);						// Creation solution courante
 
 	CheapestInsertion(probleme, solution, sommet_depart);
+	std::cout << "i : " << 1 << " Cout i : " << solution_courante.getCout() << " Best cout : " << solution.getCout() << std::endl;
 	// solution.afficherSolution();
 
 	for (int i = 2; i <= probleme.nb_sommets; i++) {
