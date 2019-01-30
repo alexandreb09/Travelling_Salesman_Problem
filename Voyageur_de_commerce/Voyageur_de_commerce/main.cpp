@@ -1,5 +1,5 @@
 #include "Voyageur_de_commerce.h"
-
+#include "time.h"
 
 int main(int, char **) {
 	t_probleme probleme;
@@ -8,6 +8,8 @@ int main(int, char **) {
 	lectureFichier("../Sources/a280.txt", probleme);
 	pre_calculProbleme(probleme);
 
+	clock_t begin = clock();										// Début mesure temps
+	
 	/************************************************************/
 	/*					RESOLUTION Nearest Neighbor 			*/
 	/* Pour chaque sommet : construction chemin avec plus proche*/
@@ -33,33 +35,31 @@ int main(int, char **) {
 	*/
 
 	/************************************************************/
-	/*					RESOLUTION 2-OPT 						*/
-	/* construction 1 solution random	+ RL avec 2-opt		 	*/
-	/* ATTENTION ! Vérifier que la ligne 182 de					*/
-	/*			   Voyageur_de_commerce.cpp est décommentée		*/
-	/*			   (génération solution aléatoire)				*/
+	/*			RESOLUTION 2-OPT sur solution aléatoire			*/
+	/* construction n solutions aléatoire + RL avec 2-opt	 	*/
 	/************************************************************/
 	/*
+	int nb_sol_random = 280;
 	Solution solution_3(probleme.nb_sommets);
-	resolutionTwoOpt(probleme, solution_3);
-	std::cout << std::endl << "Meilleure solution 2 Opt: " << std::endl;
+	resolutionTwoOpt_SolutionRandom(probleme, solution_3, nb_sol_random);
+	std::cout << std::endl << "Meilleure solution 2 Opt sur " << nb_sol_random << " solutions random : " << std::endl;
 	solution_3.afficherSolution();
 	*/
 
 	/************************************************************/
-	/*					RESOLUTION GENERALE						*/
-	/*  construction cheapest insertion + RL avec 2-opt 		*/
-	/* ATTENTION ! Vérifier que la ligne 182 de					*/
-	/*			   Voyageur_de_commerce.cpp est commentée		*/
-	/*			   (génération solution aléatoire)				*/
+	/*		RESOLUTION 2-OPT sur solution cheapest insertion	*/
+	/* Application 2-Opt sur n solutions obtenues par cheapest 	*/
+	/*	insertion												*/
 	/************************************************************/
 	/*
 	Solution solution_4 = Solution(probleme.nb_sommets);
-	resolution(probleme, solution_4);
+	resolutionTwoOpt_CheapestInsertion(probleme, solution_4);
 	std::cout << std::endl << "Meilleure solution Cheapest insertion + 2-Opt : " << std::endl;
 	solution_4.afficherSolution();
-	*/
-	
+	*/	
+
+	double tps_ecoule = double(clock() - begin) / CLOCKS_PER_SEC;			// Temps écoulé
+	// std::cout << "Temps execution : " << tps_ecoule << "s" << std::endl;	// Affichage temps écoulé
 
 	std::string quitter;
 	std::cout << "Appuyer pour quitter : ";

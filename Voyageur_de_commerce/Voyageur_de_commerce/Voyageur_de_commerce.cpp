@@ -41,6 +41,14 @@ void pre_calculProbleme(t_probleme & probleme)                //calcul des dista
 	}
 }
 
+void calculerCout(t_probleme & probleme, Solution & solution) {
+	float cout = 0;
+	for (int i = 1; i <= solution.getNbSommetsVisites(); i++) {
+		cout += probleme.distance[solution.getSommetCheminI(i)][solution.getSommetCheminI(i + 1)];
+	}
+	solution.setCout(cout);
+}
+
 void genererCheminAleatoire(t_probleme & probleme, Solution & solution) {
 	int tab[nb_sommets_max], max = probleme.nb_sommets, num_sommet_alea;
 
@@ -54,14 +62,6 @@ void genererCheminAleatoire(t_probleme & probleme, Solution & solution) {
 		tab[num_sommet_alea] = tab[max];
 		max--;
 	}
-}
-
-void calculerCout(t_probleme & probleme, Solution & solution) {
-	float cout = 0;
-	for (int i = 1; i <= solution.getNbSommetsVisites(); i++) {
-		cout += probleme.distance[solution.getSommetCheminI(i)][solution.getSommetCheminI(i + 1)];
-	}
-	solution.setCout(cout);
 }
 
 
@@ -163,7 +163,7 @@ void resolutionCheapestInsertion(t_probleme & probleme, Solution & solution){
 	Solution solution_courante(probleme.nb_sommets);						// Creation solution courante
 
 	CheapestInsertion(probleme, solution, sommet_depart);
-	std::cout << "i : " << 1 << " Cout i : " << solution_courante.getCout() << " Best cout : " << solution.getCout() << std::endl;
+	std::cout << "i: 1   Cout i: " << solution.getCout() << "   Best cout: " << solution.getCout() << std::endl;
 	// solution.afficherSolution();
 
 	for (int i = 2; i <= probleme.nb_sommets; i++) {
@@ -174,23 +174,26 @@ void resolutionCheapestInsertion(t_probleme & probleme, Solution & solution){
 			solution = solution_courante;
 			sommet_depart = i;
 		}
-		// std::cout << "i : " << i << " Cout i : " << solution_courante.getCout() << " Best cout : " << solution.getCout() << std::endl;
+		std::cout << "i: " << i << "   Cout i: " << solution_courante.getCout() << "   Best cout: " << solution.getCout() << std::endl;
 	}
 }
 
-void resolutionTwoOpt(t_probleme & probleme, Solution & solution) {
-	// genererCheminAleatoire(probleme, solution);
+void TwoOpt(t_probleme & probleme, Solution & solution, bool solutionRandom) {
+	if (solutionRandom) {
+		solution.resetSommetsVisites();
+		genererCheminAleatoire(probleme, solution);
+	}
 	calculerCout(probleme, solution);
+
 	int nb_sommets = solution.getNbSommetsVisites();
 	float best_cout = solution.getCout();
-
 	bool amelioration = true;
 
 	while (amelioration) {
 		amelioration = false;
 		
-		for (int i = 1; i <= nb_sommets; i++) {
-			for (int j = i+2; j <= nb_sommets; j++) {
+		for (int i = 1; i <= nb_sommets && !amelioration; i++) {
+			for (int j = i+2; j <= nb_sommets && !amelioration; j++) {
 				int sommet_i = solution.getSommetCheminI(i);
 				int sommet_i_suiv = solution.getSommetCheminI(i + 1);
 				int sommet_j = solution.getSommetCheminI(j);
@@ -209,7 +212,7 @@ void resolutionTwoOpt(t_probleme & probleme, Solution & solution) {
 					amelioration = true;
 					best_cout = solution.getCout();
 
-					// std::cout << "Cout sol calc : " << solution.getCout() << "  Var : " << dist_var << std::endl;
+					// std::cout << "Cout sol: " << solution.getCout() << "    Var: " << dist_var << std::endl;
 				}
 			}
 		}
@@ -217,19 +220,32 @@ void resolutionTwoOpt(t_probleme & probleme, Solution & solution) {
 }
 
 
+void resolutionTwoOpt_SolutionRandom(t_probleme & probleme, Solution & solution, int nb_test) {
+	TwoOpt(probleme, solution, flag_solution_random);
+	Solution solution_courante = Solution(probleme.nb_sommets);
+	std::cout << "iteration: 1   Cout i: " << solution.getCout() << "   Best cout: " << solution.getCout() << std::endl;
+	for (int i = 1; i <= nb_test; i++) {
+		TwoOpt(probleme, solution_courante, flag_solution_random);
+		if (solution_courante.getCout() < solution.getCout()) {
+			solution = solution_courante;
+		}
+		std::cout << "iteration: " << i << "  Cout i: " << solution_courante.getCout() << "   Best cout: " << solution.getCout() << std::endl;
+	}
+}
 
-void resolution(t_probleme & probleme, Solution & solution) {
+
+void resolutionTwoOpt_CheapestInsertion(t_probleme & probleme, Solution & solution) {
 	int sommet_depart = 1;
 	Solution solution_courante(probleme.nb_sommets);						// Creation solution courante
 
 	CheapestInsertion(probleme, solution, sommet_depart);
-	resolutionTwoOpt(probleme, solution_courante);
+	TwoOpt(probleme, solution_courante, flag_solution_non_random);
 	std::cout << "i : " << 1 << " Cout i : " << solution.getCout() << " Best cout : " << solution.getCout() << std::endl;
 
 	for (int i = 2; i <= probleme.nb_sommets; i++) {
 		solution_courante.resetSommetsVisites();
 		CheapestInsertion(probleme, solution_courante, i);
-		resolutionTwoOpt(probleme, solution_courante);
+		TwoOpt(probleme, solution_courante, flag_solution_non_random);
 		// solution_courante.afficherSolution();
 		if (solution_courante.getCout() < solution.getCout()) {
 			solution = solution_courante;
